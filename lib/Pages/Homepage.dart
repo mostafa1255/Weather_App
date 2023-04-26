@@ -9,6 +9,8 @@ import 'package:fourth_project/models/weather_model.dart';
 import 'package:fourth_project/models/weather_providers.dart';
 import 'package:provider/provider.dart';
 
+import 'Widgets/Default_Body.dart';
+
 class homepage extends StatelessWidget {
   Weathermodel? weatherdata;
   @override
@@ -22,37 +24,41 @@ class homepage extends StatelessWidget {
                   return Searchpage();
                 }));
               },
-              icon: Icon(Icons.search),
+              icon: const Icon(Icons.search),
             )
           ],
-          title: Text('Weather App'),
+          title: const Text('Weather App'),
         ),
         body:
             BlocBuilder<WeatherCubit, WeatherState>(builder: (context, state) {
           if (state is WeatherLoading) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           } else if (state is WeatherSuccsess) {
             weatherdata = BlocProvider.of<WeatherCubit>(context).weathermodel;
-            return succsessBody(context);
+            return SuccsessBody(
+              weatherdata: weatherdata,
+            );
           } else if (state is WeatherFaliure) {
-            return Center(child: Text("No data Write Naw"));
+            return const Center(child: Text("No data Write Naw"));
           } else {
-            return defultBody();
+            return const defultBody();
           }
         }));
   }
+}
 
-  Container succsessBody(BuildContext context) {
+class SuccsessBody extends StatelessWidget {
+  SuccsessBody({super.key, this.weatherdata});
+  Weathermodel? weatherdata;
+  @override
+  Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
           gradient: LinearGradient(colors: [
-        BlocProvider.of<WeatherCubit>(context).WeatherData!.getThemeColor(),
-        Provider.of<WeatherProvider>(context)
-            .weatherdata!
-            .getThemeColor()[200]!,
-        BlocProvider.of<WeatherCubit>(context).WeatherData!.getThemeColor()[50]!
+      weatherdata!.getThemeColor(),
+      weatherdata!.getThemeColor()[50]!
       ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -61,21 +67,21 @@ class homepage extends StatelessWidget {
             flex: 2,
           ),
           Text(
-            BlocProvider.of<WeatherCubit>(context).cityName.toString(),
-            style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
+            BlocProvider.of<WeatherCubit>(context).cityName!,
+            style: const TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
           ),
           Text(
-            'Updated at : ${weatherdata!.date.hour.toString()}:${weatherdata!.date.minute.toString()}',
-            style: TextStyle(fontSize: 15),
+            "Updated at : ${weatherdata!.date.hour.toString()}:${weatherdata!.date.minute.toString()}",
+            style: const TextStyle(fontSize: 15),
           ),
-          Spacer(),
+          const Spacer(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Image.asset(weatherdata!.getImage()!),
+              Image.asset(weatherdata!.getImage()),
               Text(
                 weatherdata!.temp.toString(),
-                style: TextStyle(fontSize: 40),
+                style: const TextStyle(fontSize: 40),
               ),
               Column(
                 children: [
@@ -88,35 +94,10 @@ class homepage extends StatelessWidget {
           Spacer(),
           Text(
             weatherdata?.weatherStateName ?? 'no Weather',
-            style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
           ),
-          Spacer(
+          const Spacer(
             flex: 3,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class defultBody extends StatelessWidget {
-  const defultBody({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            'There is no weater yet ',
-            style: TextStyle(fontSize: 30),
-          ),
-          Text(
-            ' searching Now',
-            style: TextStyle(fontSize: 30),
           ),
         ],
       ),

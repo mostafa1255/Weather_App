@@ -10,9 +10,7 @@ import 'package:provider/provider.dart';
 
 class Searchpage extends StatelessWidget {
   String? cityName;
-  Searchpage({this.Updateui});
 
-  VoidCallback? Updateui;
   @override
   Widget build(BuildContext context) {
     return Scaffold(

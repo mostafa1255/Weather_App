@@ -11,7 +11,7 @@ void main() {
       create: (BuildContext context) {
         return WeatherCubit(weatherservice());
       },
-      child: WeatherApp()));
+      child: const WeatherApp()));
 }
 
 class WeatherApp extends StatelessWidget {
@@ -21,14 +21,14 @@ class WeatherApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         theme: ThemeData(
-         //   primarySwatch:
+            //   primarySwatch:
             /*    Provider.of<WeatherProvider>(context).weatherdata == null
                     ? Colors.blue
                     : Provider.of<WeatherProvider>(context)
                         .weatherdata!
                         .getThemeColor()
                         */
-                        ),
+            ),
         debugShowCheckedModeBanner: false,
         home: homepage());
   }
